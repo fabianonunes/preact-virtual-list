@@ -32,6 +32,13 @@ export default class VirtualList extends Component {
 
 	componentDidUpdate() {
 		this.resize();
+		// only reinforces focus if it's a child
+		if (
+			this.base.contains(this.activeElement) &&
+			this.activeElement !== document.activeElement
+		) {
+			this.activeElement.focus();
+		}
 	}
 
 	componentDidMount() {
@@ -44,6 +51,9 @@ export default class VirtualList extends Component {
 	}
 
 	render({ data, rowHeight, renderRow, overscanCount=10, sync, ...props }, { offset=0, height=0 }) {
+		// tracks focussed element
+		this.activeElement = document.activeElement
+
 		// first visible row index
 		let start = (offset / rowHeight)|0;
 
